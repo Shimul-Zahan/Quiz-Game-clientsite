@@ -13,7 +13,11 @@ import Login from './Components/Login.jsx';
 import Registration from './Components/Registration.jsx';
 import Riddle from './Pages/Main/Riddle.jsx';
 import SavedRiddle from './Pages/Main/SavedRiddle.jsx';
-import DasHome from './Pages/Dashboard/Home.jsx';
+import Nav from './Pages/Dashboard/Nav.jsx';
+import DasHome from './Pages/Dashboard/DasHome.jsx';
+import User from './Pages/Dashboard/User.jsx';
+import Division from './Shared/Division.jsx';
+import Riddles from './Pages/Dashboard/Riddles.jsx';
 
 const router = createBrowserRouter([
   {
@@ -39,14 +43,32 @@ const router = createBrowserRouter([
       },
       {
         path: '/saved',
-        element: <SavedRiddle />,
+        element: <SavedRiddle />
       },
     ]
   },
   {
     path: '/dashboard',
-    element: <DasHome />
-  }
+    element: <Nav />,
+    children: [
+      {
+        path: '/dashboard',
+        element: <DasHome />
+      },
+      {
+        path: '/dashboard/users',
+        element: <User />
+      },
+      {
+        path: '/dashboard/division',
+        element: <Division />
+      },
+      {
+        path: '/dashboard/riddle',
+        element: <Riddles />
+      },
+    ]
+  },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
