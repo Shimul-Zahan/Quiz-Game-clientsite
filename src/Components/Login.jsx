@@ -14,9 +14,6 @@ const Login = () => {
                 {/* Input fields and the form started */}
                 <form onSubmit={handleLogin} action="" className="space-y-6">
                     <div className="space-y-2 text-sm">
-                        <label htmlFor="username" className="block ">
-                            Your name
-                        </label>
                         <div className='relative'>
                             <input type="text" name="username" id="username" placeholder="ئەزالىق نام" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
                             <svg className='absolute top-1/2 -translate-y-1/2 left-2' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -27,9 +24,6 @@ const Login = () => {
                         </div>
                     </div>
                     <div className="space-y-2 text-sm">
-                        <label htmlFor="password" className="block ">
-                            Password
-                        </label>
                         <div className='relative'>
                             <input type="password" name="password" id="password" placeholder="پارول" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
                             <svg className='absolute top-1/2 -translate-y-1/2 left-2' xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 24 24">
