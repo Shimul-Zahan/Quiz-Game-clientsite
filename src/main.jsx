@@ -16,6 +16,8 @@ import SavedRiddle from './Pages/Main/SavedRiddle.jsx';
 import Nav from './Pages/Dashboard/Nav.jsx';
 import DasHome from './Pages/Dashboard/DasHome.jsx';
 import User from './Pages/Dashboard/User.jsx';
+import Division from './Shared/Division.jsx';
+import Riddles from './Pages/Dashboard/Riddles.jsx';
 
 const router = createBrowserRouter([
   {
@@ -56,7 +58,15 @@ const router = createBrowserRouter([
       {
         path: '/dashboard/users',
         element: <User />
-      }
+      },
+      {
+        path: '/dashboard/division',
+        element: <Division />
+      },
+      {
+        path: '/dashboard/riddle',
+        element: <Riddles />
+      },
     ]
   },
 ])

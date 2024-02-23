@@ -1,7 +1,7 @@
 import React from 'react'
-import Table from '../../Shared/Table'
+import Table from './Table'
 
-const User = () => {
+const Division = () => {
     return (
         <div>
             <div className='flex justify-center items-center gap-8 pt-4'>
@@ -15,7 +15,7 @@ const User = () => {
                     </div>
                 </div>
                 <div className='flex justify-start items-center gap-4'>
-                    <h1 className='text-3xl font-bold text-center'>ئەزالار</h1>
+                    <h1 className='text-3xl font-bold text-center'>تۈرلەر</h1>
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle opacity="0.5" cx="12" cy="9" r="3" stroke="#1C274C" stroke-width="1.5" />
                         <circle cx="12" cy="12" r="10" stroke="#1C274C" stroke-width="1.5" />
@@ -24,9 +24,9 @@ const User = () => {
                 </div>
             </div>
             <hr className='mt-5 border-black' />
-            <Table type={'users'} />
+            <Table type={'division'} />
         </div>
     )
 }
 
-export default User
+export default Division
