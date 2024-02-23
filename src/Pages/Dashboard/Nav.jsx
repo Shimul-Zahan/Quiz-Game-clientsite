@@ -1,20 +1,20 @@
-import { Link } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 
-const DasHome = () => {
+const Nav = () => {
     return (
         <section className='min-h-scree w-full flex justify-center flex-row-reverse items-center'>
             <nav className='w-64 bg-[#FAB3458F] h-screen overflow-y-auto px-10'>
                 <img src={logo} alt="logo" className='h-28 mx-auto pt-5' />
                 <h1 className='text-2xl font-bold pt-5 pb-10 mx-auto'>باشقۇرغۇچى</h1>
                 <ul className='space-y-8 text-lg font-bold text-end'>
-                    <Link className='flex justify-end items-start gap-4'>
+                    <Link to='/dashboard' className='flex justify-end items-start gap-4'>
                         <li>كۆرسەتكۈچ</li>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M11 6C13.7614 6 16 8.23858 16 11M16.6588 16.6549L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </Link>
-                    <Link className='flex justify-end items-start gap-4'>
+                    <Link to='/dashboard/users' className='flex justify-end items-start gap-4'>
                         <li>ئەزالار</li>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle opacity="0.5" cx="12" cy="9" r="3" stroke="#1C274C" stroke-width="1.5" />
@@ -45,43 +45,11 @@ const DasHome = () => {
                     </Link>
                 </ul>
             </nav>
-            <div className='w-full min-h-screen py-4'>
-                <div className='flex justify-center items-start gap-4'>
-                    <li className='text-lg'>كۆرسەتكۈچ</li>
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11 6C13.7614 6 16 8.23858 16 11M16.6588 16.6549L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <hr className='mt-5' />
-                <div className='text-center py-10'>
-                    <div className="flex justify-center items-center gap-20">
-
-                        <div className="flex flex-col w-[200px] gap-10 justify-center items-center bg-[#FAB345] px-10 py-8 rounded-xl">
-                            <div className="stat-figure text-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current text-black"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            </div>
-                            <div className="text-xl">تېپىشماق</div>
-                        </div>
-
-                        <div className="flex flex-col w-[200px] gap-10 justify-center items-center bg-[#5EFA4563] px-10 py-8 rounded-xl">
-                            <div className="stat-figure text-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current text-black"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            </div>
-                            <div className="text-xl">تۈر</div>
-                        </div>
-
-                        <div className="flex flex-col w-[200px] gap-10 justify-center items-center bg-[#95EFFE] px-10 py-8 rounded-xl">
-                            <div className="stat-figure text-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current text-black"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            </div>
-                            <div className="text-xl">ئەزا</div>
-                        </div>
-
-                    </div>
-                </div>
+            <div className='w-full min-h-screen'>
+                <Outlet />
             </div>
         </section>
     )
 }
 
-export default DasHome
+export default Nav
