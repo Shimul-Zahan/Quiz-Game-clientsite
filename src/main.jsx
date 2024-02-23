@@ -12,6 +12,7 @@ import Home from './Pages/Main/Home.jsx';
 import Login from './Components/Login.jsx';
 import Registration from './Components/Registration.jsx';
 import Riddle from './Pages/Main/Riddle.jsx';
+import SavedRiddle from './Pages/Main/SavedRiddle.jsx';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: '/registration',
         element: <Registration />,
+      },
+      {
+        path: '/saved',
+        element: <SavedRiddle />,
       },
     ]
   }
