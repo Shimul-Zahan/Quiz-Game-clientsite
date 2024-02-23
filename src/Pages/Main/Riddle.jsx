@@ -3,8 +3,17 @@ import RiddleCard from '../../Components/RiddleCard'
 
 const Riddle = () => {
     return (
-        <div className='py-10'>
-            <RiddleCard />
+        <div className='flex justify-center items-center'>
+            <div className='py-10 grid grid-cols-1 lg:grid-cols-3 gap-10 max-w-7xl'>
+                <RiddleCard />
+                <RiddleCard />
+                <RiddleCard />
+                <RiddleCard />
+                <RiddleCard />
+                <RiddleCard />
+                <RiddleCard />
+                <RiddleCard />
+            </div>
         </div>
     )
 }
