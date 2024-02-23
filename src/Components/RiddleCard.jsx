@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Modal } from '../Shared/Modal';
 
 const RiddleCard = () => {
+
+    const [openModal, setOpenModal] = useState(false);
+
     return (
         <div className="rounded-lg border shadow-sm w-full max-w-md mx-auto bg-white">
             {/* Product Title */}
@@ -11,11 +15,16 @@ const RiddleCard = () => {
             </div>
             <div className="px-6 py-4 flex flex-col gap-4">
                 <div className="flex justify-between items-end gap-2">
-                    <p className="text-sm rounded-lg text-center py-2 px-8 cursor-pointer bg-[#FAB345] text-black">ساقلاش</p>
-                    <p className="text-sm rounded-lg text-center py-2 px-8 cursor-pointer bg-[#95EFFE] text-black">ئىزاھات</p>
-                    <p className="text-sm rounded-lg text-center py-2 px-8 cursor-pointer bg-[#5EFA4563] text-black">جاۋاب</p>
+                    <button onClick={() => setOpenModal({ click: true, message: 'Save' })} className="text-sm rounded-lg text-center py-2 px-8 cursor-pointer bg-[#FAB345] text-black">ساقلاش</button>
+                    <button onClick={() => setOpenModal({ click: true, message: "Dont't Remember" })} className="text-sm rounded-lg text-center py-2 px-8 cursor-pointer bg-[#95EFFE] text-black">ئىزاھات</button>
+                    <button onClick={() => setOpenModal({ click: true, message: 'Answer' })} className="text-sm rounded-lg text-center py-2 px-8 cursor-pointer bg-[#5EFA4563] text-black">جاۋاب</button>
                 </div>
             </div>
+
+            {
+                openModal?.click && <Modal openModal={openModal} setOpenModal={setOpenModal} />
+            }
+
         </div>
     )
 }
