@@ -4,8 +4,8 @@ import Table from '../../Shared/Table'
 const Riddles = () => {
     return (
         <div>
-            <div className='flex justify-center items-center gap-8 pt-4'>
-                <div className="w-[400px]">
+            <div className='flex justify-center flex-col-reverse lg:flex-row items-center gap-8 pt-4'>
+                <div className="w-full p-4 lg:w-[400px]">
                     <div className="relative">
                         <svg className="absolute ml-2 top-1/2 -translate-y-1/2"
                             xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 50 50">

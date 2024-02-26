@@ -6,7 +6,7 @@ import { MdAddReaction } from "react-icons/md";
 const Navbar = () => {
     return (
         <nav className='w-full mx-auto bg-[#95EFFE] px-10 py-4'>
-            <div className='max-w-7xl mx-auto flex justify-between items-center'>
+            <div className='max-w-7xl mx-auto flex flex-col-reverse lg:flex-row gap-5 justify-between items-center'>
                 {/* login and reg */}
                 <div className='flex justify-center items-end flex-col text-right gap-5'>
                     <div className='flex justify-end items-center gap-2'>

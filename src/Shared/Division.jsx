@@ -4,7 +4,7 @@ import Table from './Table'
 const Division = () => {
     return (
         <div>
-            <div className='flex justify-center items-center gap-8 pt-4'>
+            <div className='flex justify-center flex-col-reverse lg:flex-row items-center gap-8 pt-4'>
                 <div className="w-[400px]">
                     <div className="relative">
                         <svg className="absolute ml-2 top-1/2 -translate-y-1/2"

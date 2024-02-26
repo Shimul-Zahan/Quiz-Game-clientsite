@@ -11,7 +11,7 @@ const DasHome = () => {
             </div>
             <hr className='mt-5' />
             <div className='text-center py-10'>
-                <div className="flex justify-center items-center gap-20">
+                <div className="flex justify-center flex-col lg:flex-row items-center gap-20">
 
                     <div className="flex flex-col w-[200px] gap-10 justify-center items-center bg-[#FAB345] px-10 py-8 rounded-xl">
                         <div className="stat-figure text-secondary">
