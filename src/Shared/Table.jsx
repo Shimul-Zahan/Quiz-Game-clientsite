@@ -73,7 +73,7 @@ const Table = ({ type }) => {
                                 <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
                                 <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
                             </td>
-                            <td></td>
+                            <td>Lorem ipsum</td>
                             <th>2</th>
                         </tr>
                     }
@@ -84,7 +84,7 @@ const Table = ({ type }) => {
                                 <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
                                 <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
                             </td>
-                            <td></td>
+                            <td>Lorem ipsum</td>
                             <th>2</th>
                         </tr>
                     }
@@ -95,7 +95,7 @@ const Table = ({ type }) => {
                                 <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
                                 <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
                             </td>
-                            <td></td>
+                            <td>Lorem ipsum</td>
                             <th>2</th>
                         </tr>
                     }
@@ -107,7 +107,7 @@ const Table = ({ type }) => {
                                 <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
                                 <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
                             </td>
-                            <td></td>
+                            <td>Lorem ipsum</td>
                             <th>3</th>
                         </tr>
                     }
@@ -118,7 +118,7 @@ const Table = ({ type }) => {
                                 <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
                                 <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
                             </td>
-                            <td></td>
+                            <td>Lorem ipsum</td>
                             <th>3</th>
                         </tr>
                     }
@@ -129,7 +129,7 @@ const Table = ({ type }) => {
                                 <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
                                 <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
                             </td>
-                            <td></td>
+                            <td>Lorem ipsum</td>
                             <th>3</th>
                         </tr>
                     }
@@ -137,14 +137,14 @@ const Table = ({ type }) => {
             </table>
             {
                 type === 'division' && <button onClick={() => setOpenModal({ click: true, message: 'division' })}
-                    className='flex justify-center items-center gap-4 bg-green-600 px-8 py-1 rounded-full mx-10 text-white absolute bottom-8 left-10'>
+                    className='flex justify-center items-center gap-4 bg-green-600 px-8 py-1 rounded-full mx-10 text-white lg:absolute bottom-8 my-5 left-10'>
                     <h1 className='text-lg font-bold'>+</h1>
                     <h1>يېڭى تۈر قوشۇش</h1>
                 </button>
             }
             {
                 type === 'riddle' && <button onClick={() => setOpenModal({ click: true, message: 'riddle' })}
-                    className='flex justify-center items-center gap-4 bg-green-600 px-8 py-1 rounded-full mx-10 text-white absolute bottom-8 left-10'>
+                    className='flex justify-center items-center gap-4 bg-green-600 px-8 py-1 rounded-full mx-10 text-white lg:absolute bottom-8 left-10 my-5'>
                     <h1 className='text-lg font-bold'>+</h1>
                     <h1>يېڭى تۈر قوشۇش</h1>
                 </button>

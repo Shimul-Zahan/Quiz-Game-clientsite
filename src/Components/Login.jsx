@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -50,15 +51,18 @@ const Login = () => {
                 </form>
 
                 {/* regi in Button */}
-                <button className="text-lg rounded-xl relative p-[10px] block w-full bg-[#FAB345] text-black border-y-4 duration-500 overflow-hidden focus:border-indigo-500 z-50 group">
+                <Link to='/registration' className="text-lg rounded-xl flex justify-center items-center relative p-[10px] w-full bg-[#FAB345] text-black border-y-4 duration-500 overflow-hidden focus:border-indigo-500 z-50 group">
                     تىزىملىتىش
+                    <span className="absolute opacity-0 group-hover:opacity-100 duration-100 group-hover:duration-1000 ease-out flex justify-center inset-0 items-center z-10 text-white">
+                        Let&apos;s go
+                    </span>
                     <span className="absolute opacity-0 group-hover:opacity-100 duration-100 group-hover:duration-1000 ease-out flex justify-center inset-0 items-center z-10 text-white">
                     </span>
                     <span className="bg-indigo-800 absolute inset-0 -translate-y-full group-hover:translate-y-0 group-hover:duration-1000"></span>
                     <span className="bg-indigo-800 absolute inset-0 translate-y-full group-hover:translate-y-0 group-hover:duration-1000"></span>
                     <span className="bg-indigo-800 absolute inset-0 translate-x-full group-hover:translate-x-0 group-hover:delay-300 delay-100 duration-1000"></span>
                     <span className="bg-indigo-800 absolute inset-0 -translate-x-full group-hover:translate-x-0 group-hover:delay-300 delay-100 duration-1000"></span>
-                </button>
+                </Link>
             </div>
             <div className="w-72 mx-auto flex items-center justify-center">
                 <div className={`fixed flex justify-center items-center z-[100] ${openModal ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 backdrop-blur-sm bg-black/20 duration-100`}>
