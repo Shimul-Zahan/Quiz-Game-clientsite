@@ -19,6 +19,7 @@ import Division from './Shared/Division.jsx';
 import Riddles from './Pages/Dashboard/Riddles.jsx';
 import ForgetPassword from './Components/ForgetPassword.jsx';
 import OTP from './Components/OTPs.jsx';
+import PasswordSubmit from './Components/PasswordSubmit.jsx';
 
 const router = createBrowserRouter([
   {
@@ -43,12 +44,16 @@ const router = createBrowserRouter([
         element: <Registration />,
       },
       {
-        path:"/otp",
-        element:<OTP/>
+        path: "/otp",
+        element: <OTP />
       },
       {
-        path:"/forgetPassword",
-        element:<ForgetPassword/>
+        path: "/forgetPassword",
+        element: <ForgetPassword />
+      },
+      {
+        path: "/reset-password",
+        element: <PasswordSubmit />
       },
       {
         path: '/saved',
