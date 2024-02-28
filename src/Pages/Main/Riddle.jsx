@@ -1,8 +1,10 @@
-import React from 'react'
 import RiddleCard from '../../Components/RiddleCard'
+import CommonNavbar from '../../Shared/CommonNavbar'
 
 const Riddle = () => {
     return (
+       <>
+       <CommonNavbar/>
         <section className='p-4'>
             <h1 className='text-center py-16 text-3xl font-bold'>ئۇيغۇرچە ھەرپلار، سانلار، چالغۇلار</h1>
             <div className='flex justify-center items-center'>
@@ -18,6 +20,7 @@ const Riddle = () => {
                 </div>
             </div>
         </section>
+       </>
     )
 }
 

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import logo from '../assets/logo.png'
-import { IoMdLogIn } from "react-icons/io";
-import { MdAddReaction } from "react-icons/md";
+import group from "../assets/Group.png"
+import vector from "../assets/Vector.png"
 
 const Navbar = () => {
     return (
@@ -11,11 +11,11 @@ const Navbar = () => {
                 <div className='flex justify-center items-end flex-col text-right gap-5'>
                     <div className='flex justify-end items-center gap-2'>
                         <Link to='/login'>كىرىش</Link>
-                        <IoMdLogIn className='text-3xl' />
+                        <img src={group} alt="" />
                     </div>
                     <div className='flex justify-end items-center gap-2'>
                         <Link to='/registration'>تىزىملىتىش</Link>
-                        <MdAddReaction className='text-3xl' />
+                        <img src={vector} alt="" />
                     </div>
                 </div>
                 {/* search and logo text */}

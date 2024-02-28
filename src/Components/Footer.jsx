@@ -1,4 +1,4 @@
-import React from 'react'
+import email from "../assets/email.png"
 
 const Footer = () => {
     return (
@@ -10,8 +10,8 @@ const Footer = () => {
             <nav className="text-lg mx-auto">
                 <h1> «تامار - تامار كۆل بولار»</h1>
             </nav>
-            <aside className="text-center text-sm">
-                <p>Icon Hobe Ekhane</p>
+            <aside className="text-center flex justify-center text-sm">
+                <img src={email} alt=""  className='w-[48px]  h-[48px]'/>
             </aside>
         </footer>
 

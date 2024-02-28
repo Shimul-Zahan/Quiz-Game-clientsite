@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
 import './index.css'
 import {
   createBrowserRouter,
@@ -18,6 +17,8 @@ import DasHome from './Pages/Dashboard/DasHome.jsx';
 import User from './Pages/Dashboard/User.jsx';
 import Division from './Shared/Division.jsx';
 import Riddles from './Pages/Dashboard/Riddles.jsx';
+import ForgetPassword from './Components/ForgetPassword.jsx';
+import OTP from './Components/OTPs.jsx';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
       {
         path: '/registration',
         element: <Registration />,
+      },
+      {
+        path:"/otp",
+        element:<OTP/>
+      },
+      {
+        path:"/forgetPassword",
+        element:<ForgetPassword/>
       },
       {
         path: '/saved',
