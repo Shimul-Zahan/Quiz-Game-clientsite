@@ -1,8 +1,9 @@
-import React from 'react'
+
 import Table from './Table'
 
 const Division = () => {
     return (
+       <>
         <div>
             <div className='flex justify-center flex-col-reverse lg:flex-row items-center gap-8 pt-4'>
                 <div className="w-[400px]">
@@ -17,15 +18,16 @@ const Division = () => {
                 <div className='flex justify-start items-center gap-4'>
                     <h1 className='text-3xl font-bold text-center'>تۈرلەر</h1>
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle opacity="0.5" cx="12" cy="9" r="3" stroke="#1C274C" stroke-width="1.5" />
-                        <circle cx="12" cy="12" r="10" stroke="#1C274C" stroke-width="1.5" />
-                        <path opacity="0.5" d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                        <circle opacity="0.5" cx="12" cy="9" r="3" stroke="#1C274C" strokeWidth="1.5" />
+                        <circle cx="12" cy="12" r="10" stroke="#1C274C" strokeWidth="1.5" />
+                        <path opacity="0.5" d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20" stroke="#1C274C" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                 </div>
             </div>
             <hr className='mt-5 border-black' />
             <Table type={'division'} />
         </div>
+       </>
     )
 }
 
