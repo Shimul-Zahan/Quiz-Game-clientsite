@@ -1,8 +1,28 @@
 
 import { Link } from 'react-router-dom'
 import CommonNavbar from '../Shared/CommonNavbar'
+import axios from 'axios';
 
 const Registration = () => {
+
+    const handleSignUp = event => {
+        event.preventDefault();
+        const form = event.target
+        const name = form.username.value
+        const email = form.email.value
+        const password = form.password.value
+        console.log(name,email, password)
+
+       const user={name,email, password};
+            //using axios
+            axios.post("http://localhost:8001/user", user)
+              .then(data => {
+                if (data.data.insertedId) {
+                  console.log("data is added to the database");
+                }
+              })
+
+            }
     return (
         <>
         <CommonNavbar/>
@@ -10,7 +30,7 @@ const Registration = () => {
             <div className="w-full max-w-md p-8 space-y-3 rounded-xl border bg-white   font-sans mx-auto">
                 <h1 className="text-3xl font-bold text-center text-indigo-600 py-2">تىزىملىتىش</h1>
                 {/* Input fields and the form started */}
-                <form action="" className="space-y-7">
+                <form onSubmit={handleSignUp} action="" className="space-y-7">
                     <div className="space-y-2 text-sm">
                         <div className='relative'>
                             <input type="text" name="username" id="username" placeholder="ئەزالىق نام" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
