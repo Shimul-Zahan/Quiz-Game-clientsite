@@ -5,7 +5,7 @@ const useRiddle=() =>{
     const {data: riddle = [], refetch, isLoading} = useQuery({
         queryKey: ['riddle'],
         queryFn: async () => {
-            const res = await axios.get(`http://localhost:8001/riddle`)
+            const res = await axios.get(`http://localhost:8000/riddle`)
             return res.data
         },
         
