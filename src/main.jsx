@@ -21,6 +21,7 @@ import ForgetPassword from './Components/ForgetPassword.jsx';
 import OTP from './Components/OTPs.jsx';
 import PasswordSubmit from './Components/PasswordSubmit.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AuthContext from './Context/AuthContext.jsx';
 
 const router = createBrowserRouter([
   {
@@ -88,8 +89,10 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-   <QueryClientProvider client={queryClient}>
-   <RouterProvider router={router} />
-   </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthContext>
+        <RouterProvider router={router} />
+      </AuthContext>
+    </QueryClientProvider>
   </React.StrictMode>,
 )

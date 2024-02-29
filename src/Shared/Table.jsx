@@ -3,10 +3,10 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import useCategories from '../Hooks/useCategories';
 
-const Table = ({ type }) => {
-       
+const Table = ({ type, users }) => {
+
     const [categories] = useCategories()
-    console.log("ceterrrrrrrrrr",categories);
+    console.log("ceterrrrrrrrrr", categories);
 
     const [openModal, setOpenModal] = useState(false);
     console.log(openModal);
@@ -81,34 +81,16 @@ const Table = ({ type }) => {
                 </thead>
                 <tbody>
                     {
-                        type === 'users' && <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <th>1</th>
-                        </tr>
-                    }
-                    {
-                        type === 'users' && <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <th>1</th>
-                        </tr>
-                    }
-                    {
-                        type === 'users' && <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <th>1</th>
-                        </tr>
+                        type === 'users' && users && users.map((user, index) =>
+                            <tr className='text-center'>
+                                <td className='flex justify-center items-center gap-4'>
+                                    <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
+                                </td>
+                                <td>{user?.email}</td>
+                                <td>{user?.role}</td>
+                                <th>{index + 1}</th>
+                            </tr>
+                        )
                     }
                     {/* row 2 */}
                     {
