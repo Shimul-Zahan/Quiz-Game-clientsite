@@ -12,8 +12,10 @@ const Table = ({ type }) => {
     const [riddle,refetch] =useRiddle()
 
     const [openModal, setOpenModal] = useState(false);
-    console.log(openModal);
-    console.log(type);
+    // console.log(openModal);
+    // console.log(type);
+   
+    
     const [formData, setFormData] = useState({
         title: '',
         category: '',
@@ -47,7 +49,8 @@ const Table = ({ type }) => {
     const [categoryTitle, setCategoryTitle] = useState('');
     const [image, setImage] = useState(null);
 
-    const handleCategoryAdd = async () => {
+    const handleCategoryAdd = async (e) => {
+        e.preventDefault(); 
         try {
             const formData = new FormData();
             formData.append('categoryTitle', categoryTitle);
@@ -57,7 +60,6 @@ const Table = ({ type }) => {
     
             const response = await axios.post("http://localhost:8001/add/category", formData);
             console.log(response.data);
-            
             Swal.fire({
                 position: "top-end",
                 icon: "success",
@@ -65,7 +67,7 @@ const Table = ({ type }) => {
                 showConfirmButton: false,
                 timer: 1500
             });
-    
+           categoriesRefetch()
         } catch (error) {
             console.error(error);
         }
