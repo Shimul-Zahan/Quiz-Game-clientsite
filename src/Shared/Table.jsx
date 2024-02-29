@@ -248,7 +248,6 @@ const Table = ({ type, users }) => {
                                 <th>{riddles.answer}</th>
                                 <th>{riddles.explanation}</th>
                             </tr>))
-
                     }
 
 
