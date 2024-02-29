@@ -22,6 +22,8 @@ import OTP from './Components/OTPs.jsx';
 import PasswordSubmit from './Components/PasswordSubmit.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AuthContext from './Context/AuthContext.jsx';
+import EditForm from './Shared/EditForm.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -83,6 +85,10 @@ const router = createBrowserRouter([
         path: '/dashboard/riddle',
         element: <Riddles />
       },
+      {
+        path:"/dashboard/edit",
+        element:<EditForm/>
+      }
     ]
   },
 ])

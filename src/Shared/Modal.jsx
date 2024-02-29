@@ -1,4 +1,4 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
 
 export const Modal = ({ openModal, setOpenModal }) => {
     return (
