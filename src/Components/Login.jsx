@@ -24,9 +24,6 @@ const Login = () => {
             })
     }
 
-
-
-
     return (
         <>
             <CommonNavbar />
