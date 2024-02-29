@@ -1,17 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from 'axios';
 
-const useRiddle=() =>{
-    const {data: riddle = [], refetch, isLoading} = useQuery({
+const useRiddle = () => {
+    const { data, refetch, isLoading } = useQuery({
         queryKey: ['riddle'],
         queryFn: async () => {
             const res = await axios.get(`http://localhost:8000/riddle`)
             return res.data
         },
-        
+
     })
-    console.log(riddle)
-    return [riddle, refetch, isLoading]
+    return { data, refetch, isLoading }
 
 }
 

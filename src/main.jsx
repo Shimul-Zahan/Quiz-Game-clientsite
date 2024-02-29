@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/riddle',
+        path: `/riddle/:categoryTitle`,
         element: <Riddle />,
       },
       {

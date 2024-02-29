@@ -3,7 +3,6 @@ import Table from '../../Shared/Table'
 
 const Riddles = () => {
 
-    
     return (
         <div>
             <div className='flex justify-center flex-col-reverse lg:flex-row items-center gap-8 pt-4'>

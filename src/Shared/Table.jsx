@@ -5,17 +5,14 @@ import useCategories from '../Hooks/useCategories';
 import Swal from 'sweetalert2';
 import useRiddle from '../Hooks/useRiddle';
 
-const Table = ({ type,users }) => {
-       
-    const {categories,  categoriesRefetch} = useCategories()
-    console.log("ceterrrrrrrrrr",categories);
+const Table = ({ type, users }) => {
 
-     const [riddle,  refetch]= useRiddle()
+    const { categories, categoriesRefetch } = useCategories()
+
+    const [riddle, refetch] = useRiddle()
     const [openModal, setOpenModal] = useState(false);
-    // console.log(openModal);
-    // console.log(type);
-   
-    
+
+
     const [formData, setFormData] = useState({
         title: '',
         category: '',
@@ -26,13 +23,13 @@ const Table = ({ type,users }) => {
     //post riddles
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         console.log('Form Data:', formData);
-    
+
         try {
             const response = await axios.post('http://localhost:8000/add/riddles', formData);
             console.log('Response:', response.data);
-            
+
             Swal.fire({
                 position: "top-end",
                 icon: "success",
@@ -50,14 +47,14 @@ const Table = ({ type,users }) => {
     const [image, setImage] = useState(null);
 
     const handleCategoryAdd = async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
         try {
             const formData = new FormData();
             formData.append('categoryTitle', categoryTitle);
             formData.append('image', image); // Ensure this matches the field name expected by the server
-        
+
             console.log('Form Data:', formData);
-    
+
             const response = await axios.post("http://localhost:8000/add/category", formData);
             console.log(response.data);
             Swal.fire({
@@ -67,7 +64,7 @@ const Table = ({ type,users }) => {
                 showConfirmButton: false,
                 timer: 1500
             });
-           categoriesRefetch()
+            categoriesRefetch()
         } catch (error) {
             console.error(error);
         }
@@ -76,39 +73,39 @@ const Table = ({ type,users }) => {
     //handleDeleteRiddle
     const handleDeleteRiddle = async (riddleId) => {
         try {
-         
-          const response = await axios.delete(`http://localhost:8000/riddle/delete/${riddleId}`);
-          console.log(response.data);
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Delete successfully",
-            showConfirmButton: false,
-            timer: 1500
-        });
-          refetch();  
+
+            const response = await axios.delete(`http://localhost:8000/riddle/delete/${riddleId}`);
+            console.log(response.data);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Delete successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            refetch();
         } catch (error) {
-          console.error('Error deleting riddle:', error);
+            console.error('Error deleting riddle:', error);
         }
-      };
-      //handleDeleteRiddle
-      const handleDeleteCategory = async (CategoryId) => {
+    };
+    //handleDeleteRiddle
+    const handleDeleteCategory = async (CategoryId) => {
         try {
-         
-          const response = await axios.delete(`http://localhost:8000/category/delete/${CategoryId}`);
-          console.log(response.data);
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Delete successfully",
-            showConfirmButton: false,
-            timer: 1500
-        });
-        categoriesRefetch();  
+
+            const response = await axios.delete(`http://localhost:8000/category/delete/${CategoryId}`);
+            console.log(response.data);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Delete successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            categoriesRefetch();
         } catch (error) {
-          console.error('Error deleting category:', error);
+            console.error('Error deleting category:', error);
         }
-      };
+    };
     return (
         <div className="overflow-x-auto ">
             <table className="table table-zebra">
@@ -153,35 +150,35 @@ const Table = ({ type,users }) => {
                         )
                     }
                     {/* row 2 */}
-                       {type === 'division' && categories?.data?.map(category => (
+                    {type === 'division' && categories?.data?.map(category => (
                         <tr key={category._id} className='text-center'>
-                        <td className='flex justify-center items-center gap-4'>
-                            <button onClick={() => handleDeleteCategory(category._id)} className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                            <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
-                        </td>
-                        <td>{category.categoryTitle}</td>
-                        <th>{category.image}</th>
-                        
-                    </tr>
-                    ))
-                       }
-                    
-                    {/* row 3 */}
-                    {
-                        type === 'riddle' && riddle?.data?.map(riddles =>(
-                            <tr key={riddles._id} className='text-center'>
                             <td className='flex justify-center items-center gap-4'>
-                                <button  onClick={() => handleDeleteRiddle(riddles._id)} className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
+                                <button onClick={() => handleDeleteCategory(category._id)} className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
                                 <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
                             </td>
-                            <td>{riddles.title}</td>
-                            <th>{riddles.category}</th>
-                            <th>{riddles.answer}</th>
-                            <th>{riddles.explanation}</th>
-                        </tr>))
+                            <td>{category.categoryTitle}</td>
+                            <th>{category.image}</th>
+
+                        </tr>
+                    ))
                     }
-                    
-                   
+
+                    {/* row 3 */}
+                    {
+                        type === 'riddle' && riddle?.data?.map(riddles => (
+                            <tr key={riddles._id} className='text-center'>
+                                <td className='flex justify-center items-center gap-4'>
+                                    <button onClick={() => handleDeleteRiddle(riddles._id)} className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
+                                    <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
+                                </td>
+                                <td>{riddles.title}</td>
+                                <th>{riddles.category}</th>
+                                <th>{riddles.answer}</th>
+                                <th>{riddles.explanation}</th>
+                            </tr>))
+                    }
+
+
                 </tbody>
             </table>
             {
