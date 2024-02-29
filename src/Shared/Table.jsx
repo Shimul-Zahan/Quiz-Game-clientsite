@@ -1,16 +1,21 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import useCategories from '../Hooks/useCategories';
+import Swal from 'sweetalert2';
+import useRiddle from '../Hooks/useRiddle';
 
-const Table = ({ type, users }) => {
+const Table = ({ type,users }) => {
+       
+    const {categories,  categoriesRefetch} = useCategories()
+    console.log("ceterrrrrrrrrr",categories);
 
-    const [categories] = useCategories()
-    console.log("ceterrrrrrrrrr", categories);
-
+     const [riddle,  refetch]= useRiddle()
     const [openModal, setOpenModal] = useState(false);
-    console.log(openModal);
-    console.log(type);
+    // console.log(openModal);
+    // console.log(type);
+   
+    
     const [formData, setFormData] = useState({
         title: '',
         category: '',
@@ -21,14 +26,22 @@ const Table = ({ type, users }) => {
     //post riddles
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        console.log('Form Data:', formData);
+    
         try {
             const response = await axios.post('http://localhost:8001/add/riddles', formData);
-            console.log(response.data);
-
+            console.log('Response:', response.data);
+            
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Riddle added successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
         } catch (error) {
-            console.error(error);
-
+            console.error('Error:', error);
         }
     };
 
@@ -36,21 +49,66 @@ const Table = ({ type, users }) => {
     const [categoryTitle, setCategoryTitle] = useState('');
     const [image, setImage] = useState(null);
 
-    const handleCategoryAdd = async () => {
+    const handleCategoryAdd = async (e) => {
+        e.preventDefault(); 
         try {
             const formData = new FormData();
             formData.append('categoryTitle', categoryTitle);
-            formData.append('image', image);
-
+            formData.append('image', image); // Ensure this matches the field name expected by the server
+        
+            console.log('Form Data:', formData);
+    
             const response = await axios.post("http://localhost:8001/add/category", formData);
             console.log(response.data);
-
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Category added successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
+           categoriesRefetch()
         } catch (error) {
             console.error(error);
-
         }
     };
 
+    //handleDeleteRiddle
+    const handleDeleteRiddle = async (riddleId) => {
+        try {
+         
+          const response = await axios.delete(`http://localhost:8001/riddle/delete/${riddleId}`);
+          console.log(response.data);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Delete successfully",
+            showConfirmButton: false,
+            timer: 1500
+        });
+          refetch();  
+        } catch (error) {
+          console.error('Error deleting riddle:', error);
+        }
+      };
+      //handleDeleteRiddle
+      const handleDeleteCategory = async (CategoryId) => {
+        try {
+         
+          const response = await axios.delete(`http://localhost:8001/category/delete/${CategoryId}`);
+          console.log(response.data);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Delete successfully",
+            showConfirmButton: false,
+            timer: 1500
+        });
+        categoriesRefetch();  
+        } catch (error) {
+          console.error('Error deleting category:', error);
+        }
+      };
     return (
         <div className="overflow-x-auto ">
             <table className="table table-zebra">
@@ -76,13 +134,15 @@ const Table = ({ type, users }) => {
                             <th>بۇيرۇق</th>
                             <th>تۈر</th>
                             <th>نومۇر</th>
+                            <th>تۈر</th>
+                            <th>نومۇر</th>
                         </tr>
                     }
                 </thead>
                 <tbody>
                     {
                         type === 'users' && users && users.map((user, index) =>
-                            <tr className='text-center'>
+                            <tr key={index} className='text-center'>
                                 <td className='flex justify-center items-center gap-4'>
                                     <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
                                 </td>
@@ -93,73 +153,35 @@ const Table = ({ type, users }) => {
                         )
                     }
                     {/* row 2 */}
-                    {
-                        type === 'division' &&
-                        <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                                <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
-                            </td>
-                            <td>Lorem ipsum</td>
-                            <th>2</th>
-                        </tr>
-                    }
-                    {
-                        type === 'division' &&
-                        <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                                <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
-                            </td>
-                            <td>Lorem ipsum</td>
-                            <th>2</th>
-                        </tr>
-                    }
-                    {
-                        type === 'division' &&
-                        <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                                <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
-                            </td>
-                            <td>Lorem ipsum</td>
-                            <th>2</th>
-                        </tr>
-                    }
+                       {type === 'division' && categories?.data?.map(category => (
+                        <tr key={category._id} className='text-center'>
+                        <td className='flex justify-center items-center gap-4'>
+                            <button onClick={() => handleDeleteCategory(category._id)} className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
+                            <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
+                        </td>
+                        <td>{category.categoryTitle}</td>
+                        <th>{category.image}</th>
+                        
+                    </tr>
+                    ))
+                       }
+                    
                     {/* row 3 */}
                     {
-                        type === 'riddle' &&
-                        <tr className='text-center'>
+                        type === 'riddle' && riddle?.data?.map(riddles =>(
+                            <tr key={riddles._id} className='text-center'>
                             <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
+                                <button  onClick={() => handleDeleteRiddle(riddles._id)} className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
                                 <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
                             </td>
-                            <td>Lorem ipsum</td>
-                            <th>3</th>
-                        </tr>
+                            <td>{riddles.title}</td>
+                            <th>{riddles.category}</th>
+                            <th>{riddles.answer}</th>
+                            <th>{riddles.explanation}</th>
+                        </tr>))
                     }
-                    {
-                        type === 'riddle' &&
-                        <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                                <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
-                            </td>
-                            <td>Lorem ipsum</td>
-                            <th>3</th>
-                        </tr>
-                    }
-                    {
-                        type === 'riddle' &&
-                        <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                                <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
-                            </td>
-                            <td>Lorem ipsum</td>
-                            <th>3</th>
-                        </tr>
-                    }
+                    
+                   
                 </tbody>
             </table>
             {
@@ -196,28 +218,6 @@ const Table = ({ type, users }) => {
                             }
                             {
                                 openModal?.message === 'riddle' &&
-                                // <form onSubmit={handleSubmit} className='pb-10 space-y-5'>
-                                //     <h1>يېڭى تېپىشماق قوشۇش</h1>
-                                //     <input type="text" name="title" id="email" placeholder="تۈر" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
-                                //     <input type="text" name="category" id="email" placeholder="تېپىشماق" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
-                                //     <select
-                                //         name="category"
-                                //         className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end"
-
-                                //     >
-                                //         <option value="" className='text-gray-200'>Select Category</option>
-                                //         {/* Add options dynamically based on your categories */}
-                                //         <option value="category1">Category 1</option>
-                                //         <option value="category2">Category 2</option>
-                                //         {/* Add more options as needed */}
-                                //     </select>
-                                //     <input type="text" name="answer" id="email" placeholder="جاۋاب" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
-                                //     <input type="text" name="explanation" id="email" placeholder="ئىزاھات" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
-                                //     <div className='flex justify-center items-center gap-5'>
-                                //         <button type='submit' className='py-2 px-8 border bg-gray-200 rounded-xl'>تامام</button>
-                                //         <button type='submit' className='py-2 px-8 border bg-gray-500 rounded-xl'>قوشۇش</button>
-                                //     </div>
-                                // </form>
                                 <form onSubmit={handleSubmit} className='pb-10 space-y-5'>
                                     <h1>يېڭى تېپىشماق قوشۇش</h1>
                                     <input
@@ -235,11 +235,13 @@ const Table = ({ type, users }) => {
                                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                                     >
                                         <option value="">Select Category</option>
-                                        {categories?.map((category) => (
-                                            <option key={category._id} value={category._id}>
+                                        {categories && categories?.data?.map((category) => (
+                                            console.log(category),
+                                            <option key={category._id}>
                                                 {category.categoryTitle}
                                             </option>
                                         ))}
+                                        {console.log(categories.data)}
                                     </select>
                                     <input
                                         type="text"
