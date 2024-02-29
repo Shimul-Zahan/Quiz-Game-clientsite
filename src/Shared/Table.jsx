@@ -30,7 +30,7 @@ const Table = ({ type,users }) => {
         console.log('Form Data:', formData);
     
         try {
-            const response = await axios.post('http://localhost:8001/add/riddles', formData);
+            const response = await axios.post('http://localhost:8000/add/riddles', formData);
             console.log('Response:', response.data);
             
             Swal.fire({
@@ -58,7 +58,7 @@ const Table = ({ type,users }) => {
         
             console.log('Form Data:', formData);
     
-            const response = await axios.post("http://localhost:8001/add/category", formData);
+            const response = await axios.post("http://localhost:8000/add/category", formData);
             console.log(response.data);
             Swal.fire({
                 position: "top-end",
@@ -77,7 +77,7 @@ const Table = ({ type,users }) => {
     const handleDeleteRiddle = async (riddleId) => {
         try {
          
-          const response = await axios.delete(`http://localhost:8001/riddle/delete/${riddleId}`);
+          const response = await axios.delete(`http://localhost:8000/riddle/delete/${riddleId}`);
           console.log(response.data);
           Swal.fire({
             position: "top-end",
@@ -95,7 +95,7 @@ const Table = ({ type,users }) => {
       const handleDeleteCategory = async (CategoryId) => {
         try {
          
-          const response = await axios.delete(`http://localhost:8001/category/delete/${CategoryId}`);
+          const response = await axios.delete(`http://localhost:8000/category/delete/${CategoryId}`);
           console.log(response.data);
           Swal.fire({
             position: "top-end",
