@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import CommonNavbar from '../Shared/CommonNavbar';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
 
@@ -13,12 +14,12 @@ const Login = () => {
         const password = form.password.value
         const user = { name, password };
         console.log(user);
-        // using axios
         axios.post("http://localhost:8000/login", user)
             .then(data => {
-                if (data?.data?.status === 200) {
-                    console.log(data?.data?.status);
-                    console.log("data is added to the database");
+                if (data?.status === 200) {
+                    const loggedUser = data?.data;
+                    localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+                    toast.success('Successfully login!')
                 }
                 navigate("/")
             })

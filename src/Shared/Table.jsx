@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import useCategories from '../Hooks/useCategories';
 import Swal from 'sweetalert2';
 import useRiddle from '../Hooks/useRiddle';
 
-const Table = ({ type }) => {
+const Table = ({ type,users }) => {
+       
+    const {categories,  categoriesRefetch} = useCategories()
+    console.log("ceterrrrrrrrrr",categories);
 
-    const { categories, categoriesRefetch} = useCategories()
-
-    const [riddle,refetch] =useRiddle()
-
+     const [riddle,  refetch]= useRiddle()
     const [openModal, setOpenModal] = useState(false);
     // console.log(openModal);
     // console.log(type);
@@ -141,34 +141,16 @@ const Table = ({ type }) => {
                 </thead>
                 <tbody>
                     {
-                        type === 'users' && <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <th>1</th>
-                        </tr>
-                    }
-                    {
-                        type === 'users' && <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <th>1</th>
-                        </tr>
-                    }
-                    {
-                        type === 'users' && <tr className='text-center'>
-                            <td className='flex justify-center items-center gap-4'>
-                                <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <th>1</th>
-                        </tr>
+                        type === 'users' && users && users.map((user, index) =>
+                            <tr key={index} className='text-center'>
+                                <td className='flex justify-center items-center gap-4'>
+                                    <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
+                                </td>
+                                <td>{user?.email}</td>
+                                <td>{user?.role}</td>
+                                <th>{index + 1}</th>
+                            </tr>
+                        )
                     }
                     {/* row 2 */}
                        {type === 'division' && categories?.data?.map(category => (

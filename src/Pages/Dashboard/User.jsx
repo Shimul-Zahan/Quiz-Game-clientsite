@@ -1,6 +1,19 @@
 import Table from '../../Shared/Table'
+import { useState, useEffect } from 'react'
+import axios from 'axios';
 
 const User = () => {
+
+    const [users, setUsers] = useState([])
+
+    useEffect(() => {
+        const getAllusers = async () => {
+            const res = await axios.get('http://localhost:8000/users');
+            setUsers(res?.data);
+        }
+        getAllusers();
+    }, [])
+
     return (
         <div>
             <div className='flex justify-center items-center gap-8 pt-4'>
@@ -23,7 +36,7 @@ const User = () => {
                 </div>
             </div>
             <hr className='mt-5 border-black' />
-            <Table type={'users'} />
+            <Table type={'users'} users={users} />
         </div>
     )
 }
