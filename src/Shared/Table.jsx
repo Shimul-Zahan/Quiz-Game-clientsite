@@ -10,7 +10,9 @@ const Table = ({ type, users }) => {
     const { categories, categoriesRefetch } = useCategories()
     console.log("ceterrrrrrrrrr", categories);
 
-    const [riddle, refetch] = useRiddle()
+    const { data, refetch} = useRiddle()
+    console.log("useriddle", data);
+
     const [openModal, setOpenModal] = useState(false);
     // console.log(openModal);
     // console.log(type);
@@ -117,7 +119,7 @@ const Table = ({ type, users }) => {
     const [selectedRiddle, setSelectedRiddle] = useState(null);
 
     const editData = (_id) => {
-      const selectedRiddles = riddle?.data?.find(riddles => riddles._id === _id);
+      const selectedRiddles = data?.data?.find(riddles => riddles._id === _id);
       console.log(selectedRiddles);
       setSelectedRiddle(selectedRiddles);
         setOpenModals(true)
@@ -185,7 +187,8 @@ const Table = ({ type, users }) => {
 
                     {/* row 3 */}
                     {
-                        type === 'riddle' && riddle?.data?.map(riddles => (
+                        type === 'riddle' && data?.data?.map(riddles => (
+                            console.log("daaa",riddles),
                             <tr key={riddles._id} className='text-center'>
                                 <td className='flex justify-center items-center gap-4'>
                                     <button onClick={() => handleDeleteRiddle(riddles._id)} className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
