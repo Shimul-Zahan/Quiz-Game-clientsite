@@ -20,6 +20,7 @@ import Riddles from './Pages/Dashboard/Riddles.jsx';
 import ForgetPassword from './Components/ForgetPassword.jsx';
 import OTP from './Components/OTPs.jsx';
 import PasswordSubmit from './Components/PasswordSubmit.jsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const router = createBrowserRouter([
   {
@@ -84,9 +85,11 @@ const router = createBrowserRouter([
     ]
   },
 ])
-
+const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+   <QueryClientProvider client={queryClient}>
+   <RouterProvider router={router} />
+   </QueryClientProvider>
   </React.StrictMode>,
 )
