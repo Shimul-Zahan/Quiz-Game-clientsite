@@ -1,10 +1,55 @@
+/* eslint-disable react/prop-types */
+import axios from 'axios';
 import React, { useState } from 'react'
+import useCategories from '../Hooks/useCategories';
 
 const Table = ({ type }) => {
+       
+    const [categories] = useCategories()
+    console.log("ceterrrrrrrrrr",categories);
 
     const [openModal, setOpenModal] = useState(false);
     console.log(openModal);
     console.log(type);
+    const [formData, setFormData] = useState({
+        title: '',
+        category: '',
+        answer: '',
+        explanation: '',
+    });
+
+    //post riddles
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post('http://localhost:8001/add/riddles', formData);
+            console.log(response.data);
+
+        } catch (error) {
+            console.error(error);
+
+        }
+    };
+
+    //post categories
+    const [categoryTitle, setCategoryTitle] = useState('');
+    const [image, setImage] = useState(null);
+
+    const handleCategoryAdd = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('categoryTitle', categoryTitle);
+            formData.append('image', image);
+
+            const response = await axios.post("http://localhost:8001/add/category", formData);
+            console.log(response.data);
+
+        } catch (error) {
+            console.error(error);
+
+        }
+    };
 
     return (
         <div className="overflow-x-auto ">
@@ -157,25 +202,84 @@ const Table = ({ type }) => {
                             <svg onClick={() => setOpenModal(false)} className="w-8 mx-auto mr-0 cursor-pointer" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z" fill="#c51636"></path></g></svg>
                             {
                                 openModal?.message === 'division' &&
-                                <div className='pb-10 space-y-5'>
-                                    <input type="text" name="email" id="email" placeholder="پارول" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
-                                    <input type="text" name="email" id="email" placeholder="پارول" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
-                                    <button className='py-2 px-8 border border-black rounded-xl'> قوشۇش</button>
-                                </div>
+                                <form onSubmit={handleCategoryAdd} className='pb-10 space-y-5'>
+                                    <input type="text" name="categoryTitle" onChange={(e) => setCategoryTitle(e.target.value)} placeholder="پارول" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
+                                    <input type="file"
+                                        name="image"
+                                        onChange={(e) => setImage(e.target.files[0])}
+
+                                        placeholder="پارول" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
+                                    <button type='submit' className='py-2 px-8 border border-black rounded-xl'> قوشۇش</button>
+                                </form>
                             }
                             {
                                 openModal?.message === 'riddle' &&
-                                <div className='pb-10 space-y-5'>
+                                // <form onSubmit={handleSubmit} className='pb-10 space-y-5'>
+                                //     <h1>يېڭى تېپىشماق قوشۇش</h1>
+                                //     <input type="text" name="title" id="email" placeholder="تۈر" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
+                                //     <input type="text" name="category" id="email" placeholder="تېپىشماق" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
+                                //     <select
+                                //         name="category"
+                                //         className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end"
+
+                                //     >
+                                //         <option value="" className='text-gray-200'>Select Category</option>
+                                //         {/* Add options dynamically based on your categories */}
+                                //         <option value="category1">Category 1</option>
+                                //         <option value="category2">Category 2</option>
+                                //         {/* Add more options as needed */}
+                                //     </select>
+                                //     <input type="text" name="answer" id="email" placeholder="جاۋاب" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
+                                //     <input type="text" name="explanation" id="email" placeholder="ئىزاھات" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
+                                //     <div className='flex justify-center items-center gap-5'>
+                                //         <button type='submit' className='py-2 px-8 border bg-gray-200 rounded-xl'>تامام</button>
+                                //         <button type='submit' className='py-2 px-8 border bg-gray-500 rounded-xl'>قوشۇش</button>
+                                //     </div>
+                                // </form>
+                                <form onSubmit={handleSubmit} className='pb-10 space-y-5'>
                                     <h1>يېڭى تېپىشماق قوشۇش</h1>
-                                    <input type="text" name="email" id="email" placeholder="تۈر" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
-                                    <input type="text" name="email" id="email" placeholder="تېپىشماق" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
-                                    <input type="text" name="email" id="email" placeholder="جاۋاب" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
-                                    <input type="text" name="email" id="email" placeholder="ئىزاھات" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        placeholder="تۈر"
+                                        className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end"
+                                        value={formData.title}
+                                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                    />
+                                    <select
+                                        name="category"
+                                        className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end"
+                                        value={formData.category}
+                                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                    >
+                                        <option value="">Select Category</option>
+                                        {categories?.map((category) => (
+                                            <option key={category._id} value={category._id}>
+                                                {category.categoryTitle}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <input
+                                        type="text"
+                                        name="answer"
+                                        placeholder="جاۋاب"
+                                        className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end"
+                                        value={formData.answer}
+                                        onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
+                                    />
+                                    <input
+                                        type="text"
+                                        name="explanation"
+                                        placeholder="ئىزاھات"
+                                        className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end"
+                                        value={formData.explanation}
+                                        onChange={(e) => setFormData({ ...formData, explanation: e.target.value })}
+                                    />
                                     <div className='flex justify-center items-center gap-5'>
-                                        <button className='py-2 px-8 border bg-gray-200 rounded-xl'>تامام</button>
-                                        <button className='py-2 px-8 border bg-gray-500 rounded-xl'>قوشۇش</button>
+                                        <button type='submit' className='py-2 px-8 border bg-gray-200 rounded-xl'>تامام</button>
+                                        <button type='submit' className='py-2 px-8 border bg-gray-500 rounded-xl'>قوشۇش</button>
                                     </div>
-                                </div>
+                                </form>
                             }
                         </div>
                     </div>
