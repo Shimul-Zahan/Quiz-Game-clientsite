@@ -6,10 +6,11 @@ import axios from 'axios'
 import { useQuery } from "@tanstack/react-query";
 
 const SavedRiddle = () => {
-    const { user, loading } = useContext(MyAuthContext);
 
+    const { user, loading } = useContext(MyAuthContext);
+    console.log(user);
     const { data, refetch, isLoading } = useQuery({
-        queryKey: ['save-riddle'],
+        queryKey: ['save-riddle', user?.email],
         queryFn: async () => {
             const res = await axios.get(`http://localhost:8000/save-riddle?email=${user?.email}`)
             return res.data
