@@ -8,9 +8,15 @@ import useRiddle from '../Hooks/useRiddle';
 const Table = ({ type, users }) => {
 
     const { categories, categoriesRefetch } = useCategories()
+    console.log("ceterrrrrrrrrr", categories);
 
-    const [riddle, refetch] = useRiddle()
+    const { data, refetch } = useRiddle()
+    console.log("useriddle", data);
+
     const [openModal, setOpenModal] = useState(false);
+    // console.log(openModal);
+    // console.log(type);
+
 
 
     const [formData, setFormData] = useState({
@@ -37,6 +43,7 @@ const Table = ({ type, users }) => {
                 showConfirmButton: false,
                 timer: 1500
             });
+            refetch();
         } catch (error) {
             console.error('Error:', error);
         }
@@ -106,6 +113,96 @@ const Table = ({ type, users }) => {
             console.error('Error deleting category:', error);
         }
     };
+
+    //edit form
+    const [openModals, setOpenModals] = useState(false);
+    const [selectedRiddle, setSelectedRiddle] = useState(null);
+
+    const editData = (_id) => {
+        const selectedRiddles = data?.data?.find(riddles => riddles._id === _id);
+        console.log(selectedRiddles);
+        setSelectedRiddle(selectedRiddles);
+        setOpenModals(true)
+        console.log(_id);
+    }
+    // axios.patch
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            // Get the _id of the selected riddle
+            const riddleId = selectedRiddle._id;
+            console.log(riddleId);
+            const updatedData = {
+                title: e.target.title.value,
+                category: e.target.category.value,
+                answer: e.target.answer.value,
+                explanation: e.target.explanation.value,
+            };
+
+            // Send PATCH request to update the riddle
+            const response = await axios.patch(`http://localhost:8000/update/riddles/${riddleId}`, updatedData);
+
+            console.log(response.data);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "update successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            refetch();
+
+        } catch (error) {
+            console.error(error);
+            // Handle errors (e.g., show an error message to the user)
+        }
+    };
+
+    //---------------------------------------update category----------------------------
+
+    const [openModalCategory, setOpenModalCategory] = useState(false);
+    const [selectCategory, setSelectCategory] = useState(null);
+
+    const editCategory = (_id) => {
+        const selectedCategories = categories?.data?.find(category => category._id === _id);
+        console.log(selectedCategories);
+        setSelectCategory(selectedCategories);
+        setOpenModalCategory(true)
+        console.log(_id);
+    }
+
+    const handleCategoryUpdate = async (e) => {
+        e.preventDefault();
+
+        try {
+            const categoryId = selectCategory._id; // Replace with the actual category ID
+            const categoryTitle = e.target.elements.categoryTitle.value;
+            const image = e.target.elements.image.files[0];
+
+            // Create FormData to handle file upload
+            const formData = new FormData();
+            formData.set('categoryTitle', categoryTitle);
+            formData.set('image', image);
+
+            // Make axios.patch request
+            const response = await axios.patch(`http://localhost:8000/update/category/${categoryId}`, formData);
+
+            console.log(response.data);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Update successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } catch (error) {
+            console.error('Error updating category:', error);
+            // Handle errors, show an error message, etc.
+        }
+    };
+
     return (
         <div className="overflow-x-auto ">
             <table className="table table-zebra">
@@ -154,7 +251,25 @@ const Table = ({ type, users }) => {
                         <tr key={category._id} className='text-center'>
                             <td className='flex justify-center items-center gap-4'>
                                 <button onClick={() => handleDeleteCategory(category._id)} className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                                <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
+                                {/* <button   className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button> */}
+                                <div className="mx-auto flex items-center justify-center">
+                                    <button onClick={() => editCategory(category._id)} className="bg-[#0095FF] text-white p-2 rounded-lg">تۈزىتىش</button>
+                                    <div className={`fixed flex justify-center items-center z-[100] ${openModalCategory ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 backdrop-blur-sm bg-black/20 duration-100`}>
+                                        <div className={`absolute max-w-md p-4 text-center bg-white drop-shadow-2xl rounded-lg ${openModalCategory ? 'scale-1 opacity-1 duration-300' : 'scale-0 opacity-0 duration-150'}`}>
+                                            <svg onClick={() => setOpenModalCategory(false)} className="w-8 mx-auto mr-0 cursor-pointer" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z" fill="#c51636"></path></g></svg>
+                                            <form onSubmit={handleCategoryUpdate} className='pb-10 space-y-5'>
+                                                <input type="text" name="categoryTitle"
+                                                    defaultValue={selectCategory ? selectCategory.categoryTitle : ''}
+                                                    placeholder="پارول" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
+                                                <input type="file"
+                                                    name="image"
+                                                    defaultValue={selectCategory ? selectCategory.image : ''}
+                                                    placeholder="پارول" className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end" />
+                                                <button type='submit' className='py-2 px-8 border border-black rounded-xl'> قوشۇش</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                             <td>{category.categoryTitle}</td>
                             <th>{category.image}</th>
@@ -165,11 +280,60 @@ const Table = ({ type, users }) => {
 
                     {/* row 3 */}
                     {
-                        type === 'riddle' && riddle?.data?.map(riddles => (
+                        type === 'riddle' && data?.data?.map(riddles => (
                             <tr key={riddles._id} className='text-center'>
                                 <td className='flex justify-center items-center gap-4'>
                                     <button onClick={() => handleDeleteRiddle(riddles._id)} className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
-                                    <button className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button>
+                                    {/* update form information  */}
+                                    <div className="w-72 mx-auto flex items-center justify-center">
+                                        <button onClick={() => editData(riddles._id)} className="bg-[#0095FF] text-white p-2 rounded-lg">تۈزىتىش</button>
+                                        <div className={`fixed flex justify-center items-center z-[100] ${openModals ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 backdrop-blur-sm bg-black/20 duration-100`}>
+                                            <div className={`absolute max-w-md p-4 text-center bg-white drop-shadow-2xl rounded-lg ${openModals ? 'scale-1 opacity-1 duration-300' : 'scale-0 opacity-0 duration-150'}`}>
+                                                <svg onClick={() => setOpenModals(false)} className="w-8 mx-auto mr-0 cursor-pointer" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z" fill="#c51636"></path></g></svg>
+                                                <form onSubmit={handleFormSubmit} className='pb-10 space-y-5'>
+                                                    <h1>يېڭى تېپىشماق قوشۇش</h1>
+                                                    <input
+                                                        type="text"
+                                                        name="title"
+
+                                                        defaultValue={selectedRiddle ? selectedRiddle.title : ''}
+                                                        className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end"
+                                                    />
+                                                    <select
+                                                        name="category"
+                                                        className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end"
+                                                    >
+                                                        {categories && categories?.data?.map((category) => (
+                                                            console.log(category),
+                                                            <option key={category._id} defaultValue={selectedRiddle ? selectedRiddle.category.category : ""}>
+                                                                {category.categoryTitle}
+                                                            </option>
+                                                        ))}
+
+                                                    </select>
+                                                    <input
+                                                        type="text"
+                                                        name="answer"
+
+                                                        defaultValue={selectedRiddle ? selectedRiddle.answer : ""}
+                                                        className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        name="explanation"
+
+                                                        defaultValue={selectedRiddle ? selectedRiddle.explanation : ""}
+                                                        className="w-full px-4 py-3 rounded-md border border-indigo-300 focus:outline-none focus:ring text-end"
+                                                    />
+                                                    <div className='flex justify-center items-center gap-5'>
+                                                        <button type='submit' className='py-2 px-8 border bg-gray-200 rounded-xl'>تامام</button>
+                                                        <button type='submit' className='py-2 px-8 border bg-gray-500 rounded-xl'>قوشۇش</button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>{riddles.title}</td>
                                 <th>{riddles.category}</th>
@@ -195,7 +359,7 @@ const Table = ({ type, users }) => {
                     <h1>يېڭى تۈر قوشۇش</h1>
                 </button>
             }
-
+            {/*----------------------------------- Category add form ------------------------- */}
             {
                 openModal?.click && <div className="lg:w-64 mx-auto lg:px-10 flex items-center justify-center">
                     <div className={`fixed flex justify-center items-center z-[100] ${openModal ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 backdrop-blur-sm bg-black/20 duration-100`}>
@@ -213,6 +377,8 @@ const Table = ({ type, users }) => {
                                     <button type='submit' className='py-2 px-8 border border-black rounded-xl'> قوشۇش</button>
                                 </form>
                             }
+
+                            {/*----------------------------------- Riddle add form ------------------------- */}
                             {
                                 openModal?.message === 'riddle' &&
                                 <form onSubmit={handleSubmit} className='pb-10 space-y-5'>
