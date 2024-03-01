@@ -16,12 +16,14 @@ const Login = () => {
         console.log(user);
         axios.post("http://localhost:8000/login", user)
             .then(data => {
-                if (data?.status === 200) {
-                    const loggedUser = data?.data;
-                    localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
-                    toast.success('Successfully login!')
+                if (data?.data?.message !== 'password didn"t match') {
+                    console.log(data?.data);
+                    localStorage.setItem('loggedUser', JSON.stringify(data?.data));
+                    navigate("/dashboard");
                 }
-                navigate("/")
+                else {
+                    window.alert('password not match');
+                }
             })
     }
 

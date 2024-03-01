@@ -1,13 +1,27 @@
+import { useEffect, useState } from 'react'
 import RiddleCard from '../../Components/RiddleCard'
 import useRiddle from '../../Hooks/useRiddle'
 import CommonNavbar from '../../Shared/CommonNavbar'
 import { useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const Riddle = () => {
 
     const { categoryTitle } = useParams();
-    const { data, refetch } = useRiddle()
-    const filterRiddle = data?.data && data.data?.filter(item => item.category === categoryTitle);
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        const getAllCat = async () => {
+            const res = await axios.get('http://localhost:8000/allRiddle');
+            console.log(res.data);
+            setData(res.data)
+        }
+        getAllCat();
+    }, [])
+
+    console.log(data);
+
+    const filterRiddle = data && data?.data?.filter(item => item.category === categoryTitle);
 
     return (
         <>
