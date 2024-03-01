@@ -2,12 +2,14 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Modal } from '../Shared/Modal';
 import { MyAuthContext } from '../Context/AuthContext';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 const RiddleCard = ({ item, save }) => {
 
     const [openModal, setOpenModal] = useState(false);
     const { user, loading } = useContext(MyAuthContext);
     console.log(user?.email);
+    const navigate = useNavigate();
 
     const handleSave = async () => {
         const addRiddle = {
@@ -21,6 +23,7 @@ const RiddleCard = ({ item, save }) => {
         const res = await axios.post(`http://localhost:8000/save-riddle`, addRiddle);
         if (res.data.message === 'successfully added') {
             console.log('added succeessfully');
+            navigate('/saved');
         } else {
             console.log('Already exist.');
         }
