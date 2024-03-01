@@ -1,41 +1,35 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios';
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import useCategories from '../Hooks/useCategories';
 import Swal from 'sweetalert2';
 import useRiddle from '../Hooks/useRiddle';
+import { MyAuthContext } from '../Context/AuthContext';
 
 const Table = ({ type, users }) => {
 
     const { categories, categoriesRefetch } = useCategories()
-    console.log("ceterrrrrrrrrr", categories);
-
+    const { user, loading } = useContext(MyAuthContext);
+    console.log(user?.email, loading);
     const { data, refetch } = useRiddle()
-    console.log("useriddle", data);
-
     const [openModal, setOpenModal] = useState(false);
-    // console.log(openModal);
-    // console.log(type);
-
-
 
     const [formData, setFormData] = useState({
         title: '',
         category: '',
         answer: '',
         explanation: '',
+        email: user && user.email,
     });
 
     //post riddles
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         console.log('Form Data:', formData);
-
         try {
             const response = await axios.post('http://localhost:8000/add/riddles', formData);
             console.log('Response:', response.data);
-
+            setOpenModal(false);
             Swal.fire({
                 position: "top-end",
                 icon: "success",
@@ -58,12 +52,11 @@ const Table = ({ type, users }) => {
         try {
             const formData = new FormData();
             formData.append('categoryTitle', categoryTitle);
-            formData.append('image', image); // Ensure this matches the field name expected by the server
-
-            console.log('Form Data:', formData);
-
+            formData.append('image', image);
+            formData.append('email', user?.email);
             const response = await axios.post("http://localhost:8000/add/category", formData);
-            console.log(response.data);
+            setOpenModal(false);
+            window.location.reload();
             Swal.fire({
                 position: "top-end",
                 icon: "success",
@@ -71,7 +64,7 @@ const Table = ({ type, users }) => {
                 showConfirmButton: false,
                 timer: 1500
             });
-            categoriesRefetch()
+            getAllusers()
         } catch (error) {
             console.error(error);
         }
@@ -203,8 +196,27 @@ const Table = ({ type, users }) => {
         }
     };
 
+    // ---------------dlt user----------
+    const handleUser = async (id) => {
+        try {
+
+            const response = await axios.delete(`http://localhost:8000/user/delete?id=${id}`);
+            const users = users.filter(user => user.id !== id);
+            console.log(response.data);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Delete successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } catch (error) {
+            console.error('Error deleting category:', error);
+        }
+    }
+
     return (
-        <div className="overflow-x-auto ">
+        <div className="overflow-x-auto min-h-screen">
             <table className="table table-zebra">
                 {/* head */}
                 <thead className='bg-black text-white'>
@@ -238,7 +250,7 @@ const Table = ({ type, users }) => {
                         type === 'users' && users && users.map((user, index) =>
                             <tr key={index} className='text-center'>
                                 <td className='flex justify-center items-center gap-4'>
-                                    <button className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
+                                    <button onClick={() => handleUser(user._id)} className='bg-[#FAB345] text-red-500 px-8 py-2 rounded-full'>ئۆچۈرۈش</button>
                                 </td>
                                 <td>{user?.email}</td>
                                 <td>{user?.role}</td>
@@ -254,7 +266,7 @@ const Table = ({ type, users }) => {
                                 {/* <button   className='bg-[#01D9FE] text-white px-8 py-2 rounded-full'>تۈزىتىش</button> */}
                                 <div className="mx-auto flex items-center justify-center">
                                     <button onClick={() => editCategory(category._id)} className="bg-[#0095FF] text-white p-2 rounded-lg">تۈزىتىش</button>
-                                    <div className={`fixed flex justify-center items-center z-[100] ${openModalCategory ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 backdrop-blur-sm bg-black/20 duration-100`}>
+                                    <div className={` flex justify-center items-center z-[100] ${openModalCategory ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 backdrop-blur-sm bg-black/20 duration-100`}>
                                         <div className={`absolute max-w-md p-4 text-center bg-white drop-shadow-2xl rounded-lg ${openModalCategory ? 'scale-1 opacity-1 duration-300' : 'scale-0 opacity-0 duration-150'}`}>
                                             <svg onClick={() => setOpenModalCategory(false)} className="w-8 mx-auto mr-0 cursor-pointer" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z" fill="#c51636"></path></g></svg>
                                             <form onSubmit={handleCategoryUpdate} className='pb-10 space-y-5'>
@@ -287,7 +299,7 @@ const Table = ({ type, users }) => {
                                     {/* update form information  */}
                                     <div className="w-72 mx-auto flex items-center justify-center">
                                         <button onClick={() => editData(riddles._id)} className="bg-[#0095FF] text-white p-2 rounded-lg">تۈزىتىش</button>
-                                        <div className={`fixed flex justify-center items-center z-[100] ${openModals ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 backdrop-blur-sm bg-black/20 duration-100`}>
+                                        <div className={` flex justify-center items-center z-[100] ${openModals ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 backdrop-blur-sm bg-black/20 duration-100`}>
                                             <div className={`absolute max-w-md p-4 text-center bg-white drop-shadow-2xl rounded-lg ${openModals ? 'scale-1 opacity-1 duration-300' : 'scale-0 opacity-0 duration-150'}`}>
                                                 <svg onClick={() => setOpenModals(false)} className="w-8 mx-auto mr-0 cursor-pointer" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z" fill="#c51636"></path></g></svg>
                                                 <form onSubmit={handleFormSubmit} className='pb-10 space-y-5'>
@@ -362,7 +374,7 @@ const Table = ({ type, users }) => {
             {/*----------------------------------- Category add form ------------------------- */}
             {
                 openModal?.click && <div className="lg:w-64 mx-auto lg:px-10 flex items-center justify-center">
-                    <div className={`fixed flex justify-center items-center z-[100] ${openModal ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 backdrop-blur-sm bg-black/20 duration-100`}>
+                    <div className={` flex justify-center items-center z-[100] ${openModal ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 backdrop-blur-sm bg-black/20 duration-100`}>
                         <div className={`absolute max-w-md p-4 text-center bg-white drop-shadow-2xl rounded-lg ${openModal ? 'scale-1 opacity-1 duration-300' : 'scale-0 opacity-0 duration-150'}`}>
                             <svg onClick={() => setOpenModal(false)} className="w-8 mx-auto mr-0 cursor-pointer" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z" fill="#c51636"></path></g></svg>
                             {
@@ -423,7 +435,6 @@ const Table = ({ type, users }) => {
                                         onChange={(e) => setFormData({ ...formData, explanation: e.target.value })}
                                     />
                                     <div className='flex justify-center items-center gap-5'>
-                                        <button type='submit' className='py-2 px-8 border bg-gray-200 rounded-xl'>تامام</button>
                                         <button type='submit' className='py-2 px-8 border bg-gray-500 rounded-xl'>قوشۇش</button>
                                     </div>
                                 </form>
